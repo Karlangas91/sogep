@@ -39,3 +39,4 @@ app.use('/clientes', require('./routes/clientes'));
 app.listen(PORT, () => {
     console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
 });
+require('./scripts/createAdmin');
