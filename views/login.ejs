@@ -13,12 +13,20 @@
         <div class="card">
             <div class="card-body login-card-body">
                 <p class="login-box-msg">Inicia sesión</p>
+                
+                <% if (message) { %>
+                    <p class="alert alert-danger"><%= message %></p>
+                <% } %>
+
                 <form action="/login" method="POST">
-                    <input type="text" name="username" placeholder="Usuario" class="form-control mb-3">
-                    <input type="password" name="password" placeholder="Contraseña" class="form-control mb-3">
+                    <div class="mb-3">
+                        <input type="text" name="username" class="form-control" placeholder="Usuario" value="<%= session.username || '' %>">
+                    </div>
+                    <div class="mb-3">
+                        <input type="password" name="password" class="form-control" placeholder="Contraseña">
+                    </div>
                     <button type="submit" class="btn btn-primary btn-block">Ingresar</button>
                 </form>
-                <p class="text-danger"><%= message %></p>
             </div>
         </div>
     </div>
