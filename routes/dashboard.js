@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-// Ruta de inicio
+// Ruta para el Dashboard
 router.get('/', (req, res) => {
-    res.send('Bienvenido a SOGEP - Página de inicio.');
+    res.render('dashboard');
 });
 
 module.exports = router;
