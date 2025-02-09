@@ -21,4 +21,17 @@ async function crearAdmin() {
 
         // Insertar usuario admin
         await pool.query(
-            "INSERT INTO users (username, email, password) VALUE
+            "INSERT INTO users (username, email, password) VALUES ($1, $2, $3)",
+            [username, email, hashedPassword]
+        );
+
+        console.log("✅ Usuario 'admin' creado con éxito.");
+        process.exit(0);
+    } catch (error) {
+        console.error("❌ Error creando usuario admin:", error);
+        process.exit(1);
+    }
+}
+
+// Ejecutar la función
+crearAdmin();
