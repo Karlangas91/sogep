@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - SOGEP</title>
+    <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css">
+</head>
+<body class="hold-transition login-page">
+    <div class="login-box">
+        <div class="login-logo">
+            <b>SOGEP</b>
+        </div>
+        <div class="card">
+            <div class="card-body login-card-body">
+                <p class="login-box-msg">Inicia sesión</p>
+                <form action="/login" method="POST">
+                    <input type="text" name="username" placeholder="Usuario" class="form-control mb-3">
+                    <input type="password" name="password" placeholder="Contraseña" class="form-control mb-3">
+                    <button type="submit" class="btn btn-primary btn-block">Ingresar</button>
+                </form>
+                <p class="text-danger"><%= message %></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
