@@ -6,17 +6,21 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
                 <li class="nav-item">
-                    <a href="/dashboard" class="nav-link">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
-                        <p>Dashboard</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/users" class="nav-link">
+                    <a href="/users" class="nav-link <%= (currentPage === 'users') ? 'active' : '' %>">
                         <i class="nav-icon fas fa-users"></i>
                         <p>Gestión de Usuarios</p>
                     </a>
                 </li>
+                
+                <% if (currentPage === 'users') { %>
+                    <li class="nav-item">
+                        <a href="/roles" class="nav-link">
+                            <i class="nav-icon fas fa-user-shield"></i>
+                            <p>Gestión de Roles</p>
+                        </a>
+                    </li>
+                <% } %>
+                
             </ul>
         </nav>
     </div>

@@ -15,17 +15,14 @@ function isAuthenticated(req, res, next) {
 // 📌 Listar Usuarios (GET)
 router.get('/', isAuthenticated, async (req, res) => {
     try {
-        const users = await pool.query(`
-            SELECT users.id, users.username, users.email, roles.name AS role 
-            FROM users 
-            LEFT JOIN roles ON users.role_id = roles.id
-        `);
-        res.render('users/index', { users: users.rows, message: req.flash('message') });
+        const users = await pool.query("SELECT * FROM users");
+        res.render('users/index', { users: users.rows, currentPage: 'users' });
     } catch (error) {
         console.error("❌ Error obteniendo usuarios:", error);
         res.redirect('/dashboard');
     }
 });
+
 
 // 📌 Mostrar formulario para Crear Usuario (GET)
 router.get('/create', isAuthenticated, async (req, res) => {

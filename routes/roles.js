@@ -15,12 +15,13 @@ function isAuthenticated(req, res, next) {
 router.get('/', isAuthenticated, async (req, res) => {
     try {
         const roles = await pool.query("SELECT * FROM roles");
-        res.render('roles/index', { roles: roles.rows, message: req.flash('message') });
+        res.render('roles/index', { roles: roles.rows, currentPage: 'roles' });
     } catch (error) {
         console.error("❌ Error obteniendo roles:", error);
         res.redirect('/dashboard');
     }
 });
+
 
 // 📌 Mostrar formulario para Crear Rol (GET)
 router.get('/create', isAuthenticated, (req, res) => {
