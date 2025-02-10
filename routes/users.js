@@ -41,11 +41,11 @@ router.post('/create', isAuthenticated, async (req, res) => {
             [username, email, hashedPassword, role_id]
         );
 
-        req.flash('message', '✅ Usuario creado exitosamente.');
+        req.flash('successMessage', '✅ Usuario creado exitosamente.');
         res.redirect('/users');
     } catch (error) {
         console.error("❌ Error creando usuario:", error);
-        req.flash('message', 'Error al crear el usuario.');
+        req.flash('errorMessage', '❌ Error al crear el usuario.');
         res.redirect('/users/create');
     }
 });
@@ -74,11 +74,11 @@ router.post('/edit/:id', isAuthenticated, async (req, res) => {
         await pool.query("UPDATE users SET username = $1, email = $2, role_id = $3 WHERE id = $4",
             [username, email, role_id, req.params.id]);
 
-        req.flash('message', '✅ Usuario actualizado correctamente.');
-        res.redirect('/users');
+            req.flash('successMessage', '✅ Usuario actualizado correctamente.');
+            res.redirect('/users');
     } catch (error) {
         console.error("❌ Error actualizando usuario:", error);
-        req.flash('message', 'Error al actualizar el usuario.');
+        req.flash('errorMessage', '❌ Error al actualizar el usuario.');
         res.redirect(`/users/edit/${req.params.id}`);
     }
 });
@@ -87,10 +87,10 @@ router.post('/edit/:id', isAuthenticated, async (req, res) => {
 router.get('/delete/:id', isAuthenticated, async (req, res) => {
     try {
         await pool.query("DELETE FROM users WHERE id = $1", [req.params.id]);
-        req.flash('message', '✅ Usuario eliminado correctamente.');
+        req.flash('successMessage', '✅ Usuario eliminado correctamente.');
     } catch (error) {
         console.error("❌ Error eliminando usuario:", error);
-        req.flash('message', 'Error al eliminar el usuario.');
+        req.flash('errorMessage', '❌ Error al eliminar el usuario.');
     }
     res.redirect('/users');
 });

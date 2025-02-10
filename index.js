@@ -29,6 +29,8 @@ app.use(flash());
 app.use((req, res, next) => {
     res.locals.message = req.flash('message');
     res.locals.username = req.flash('username');
+    res.locals.successMessage = req.flash('successMessage');
+    res.locals.errorMessage = req.flash('errorMessage');
     next();
 });
 
