@@ -12,17 +12,33 @@
                         <p>Dashboard</p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="/users" class="nav-link <%= currentPage === 'users' ? 'active' : '' %>">
-                        <i class="nav-icon fas fa-users"></i>
-                        <p>Gestión de Usuarios</p>
+
+
+                <!-- NUEVO: Configuración -->
+                <li class="nav-item has-treeview <%= (currentPage === 'users' || currentPage === 'roles') ? 'menu-open' : '' %>">
+                    <a href="#" class="nav-link <%= (currentPage === 'users' || currentPage === 'roles') ? 'active' : '' %>">
+                        <i class="nav-icon fas fa-cogs"></i>
+                        <p>
+                            Configuración
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
                     </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/roles" class="nav-link <%= currentPage === 'roles' ? 'active' : '' %>">
-                        <i class="nav-icon fas fa-user-shield"></i>
-                        <p>Gestión de Roles</p>
-                    </a>
+                    <ul class="nav nav-treeview">
+                        <!-- Gestión de Usuarios -->
+                        <li class="nav-item">
+                            <a href="/users" class="nav-link <%= currentPage === 'users' ? 'active' : '' %>">
+                                <i class="fas fa-users nav-icon"></i>
+                                <p>Gestión de Usuarios</p>
+                            </a>
+                        </li>
+                        <!-- Gestión de Roles -->
+                        <li class="nav-item">
+                            <a href="/roles" class="nav-link <%= currentPage === 'roles' ? 'active' : '' %>">
+                                <i class="fas fa-user-shield nav-icon"></i>
+                                <p>Gestión de Roles</p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
 
