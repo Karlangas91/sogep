@@ -23,4 +23,14 @@ async function addRoleColumn() {
                 ALTER TABLE users ADD COLUMN role_id INTEGER REFERENCES roles(id) DEFAULT 1;
             `);
 
-            consol
+            console.log("✅ Columna 'role_id' añadida a 'users' correctamente.");
+        } else {
+            console.log("✅ La columna 'role_id' ya existe en 'users'.");
+        }
+    } catch (error) {
+        console.error("❌ Error al añadir la columna 'role_id':", error);
+    }
+}
+
+// 🔹 Asegurar que la función esté exportada correctamente
+module.exports = addRoleColumn;
