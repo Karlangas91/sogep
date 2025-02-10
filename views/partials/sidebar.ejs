@@ -1,16 +1,13 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <!-- Nombre del sistema -->
-    <a href="/dashboard" class="brand-link">
-        <span class="brand-text font-weight-light">SOGEP</span>
-    </a>
-
-    <!-- Switch para fijar la barra lateral -->
-    <div class="sidebar-toggle-container text-center p-2">
-        <label class="switch">
-            <input type="checkbox" id="toggleSidebarSwitch">
-            <span class="slider round"></span>
-        </label>
-        <small class="text-white d-block">Fijar Barra</small>
+    <!-- Contenedor del logo y el switch -->
+    <div class="brand-container d-flex justify-content-between align-items-center p-2">
+        <a href="/dashboard" class="brand-link">
+            <span class="brand-text font-weight-light">SOGEP</span>
+        </a>
+        <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="sidebarSwitch">
+            <label class="custom-control-label" for="sidebarSwitch"></label>
+        </div>
     </div>
 
     <!-- Menú lateral -->
@@ -40,79 +37,37 @@
     </div>
 </aside>
 
-<!-- Estilos para el Switch -->
-<style>
-    .switch {
-        position: relative;
-        display: inline-block;
-        width: 40px;
-        height: 20px;
-    }
-
-    .switch input {
-        opacity: 0;
-        width: 0;
-        height: 0;
-    }
-
-    .slider {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: #ccc;
-        transition: .4s;
-        border-radius: 20px;
-    }
-
-    .slider:before {
-        position: absolute;
-        content: "";
-        height: 14px;
-        width: 14px;
-        left: 3px;
-        bottom: 3px;
-        background-color: white;
-        transition: .4s;
-        border-radius: 50%;
-    }
-
-    input:checked + .slider {
-        background-color: #28a745;
-    }
-
-    input:checked + .slider:before {
-        transform: translateX(20px);
-    }
-</style>
-
-<!-- Script para gestionar el Switch y la barra lateral -->
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const sidebar = document.querySelector('.main-sidebar');
-        const toggleSidebarSwitch = document.getElementById('toggleSidebarSwitch');
-
-        // Cargar estado guardado en localStorage
-        const isSidebarFixed = localStorage.getItem('sidebarFixed') === 'true';
-        toggleSidebarSwitch.checked = isSidebarFixed;
-        if (isSidebarFixed) {
-            sidebar.classList.add('sidebar-fixed');
-            document.body.classList.add('sidebar-expanded');
+        const sidebar = document.querySelector(".main-sidebar");
+        const switchBtn = document.getElementById("sidebarSwitch");
+        
+        // Verificar estado guardado en localStorage
+        if (localStorage.getItem("sidebarFixed") === "true") {
+            sidebar.classList.add("sidebar-fixed");
+            switchBtn.checked = true;
         }
 
-        // Evento para cambiar estado de la barra lateral
-        toggleSidebarSwitch.addEventListener('change', function () {
+        switchBtn.addEventListener("change", function () {
             if (this.checked) {
-                sidebar.classList.add('sidebar-fixed');
-                document.body.classList.add('sidebar-expanded');
-                localStorage.setItem('sidebarFixed', 'true');
+                sidebar.classList.add("sidebar-fixed");
+                localStorage.setItem("sidebarFixed", "true");
             } else {
-                sidebar.classList.remove('sidebar-fixed');
-                document.body.classList.remove('sidebar-expanded');
-                localStorage.setItem('sidebarFixed', 'false');
+                sidebar.classList.remove("sidebar-fixed");
+                localStorage.setItem("sidebarFixed", "false");
             }
         });
     });
 </script>
+
+<style>
+    .brand-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .sidebar-fixed {
+        position: fixed;
+        height: 100vh;
+    }
+</style>
