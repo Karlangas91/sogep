@@ -12,7 +12,7 @@ router.post('/login', async (req, res) => {
         const result = await pool.query("SELECT * FROM users WHERE username = $1", [username]);
 
         if (result.rows.length === 0) {
-            req.flash('message', 'Usuario o contraseña incorrectos.');
+            req.flash('error', 'Usuario o contraseña incorrectos.');
             return res.redirect('/login');
         }
 
@@ -21,7 +21,7 @@ router.post('/login', async (req, res) => {
         // Verificar contraseña
         const passwordMatch = await bcrypt.compare(password, user.password);
         if (!passwordMatch) {
-            req.flash('message', 'Usuario o contraseña incorrectos.');
+            req.flash('error', 'Usuario o contraseña incorrectos.');
             return res.redirect('/login');
         }
 
@@ -32,12 +32,21 @@ router.post('/login', async (req, res) => {
             email: user.email
         };
 
+        req.flash('success', 'Inicio de sesión exitoso.');
         res.redirect('/dashboard');
     } catch (error) {
         console.error("Error autenticando usuario:", error);
-        req.flash('message', 'Ocurrió un error. Inténtalo de nuevo.');
+        req.flash('error', 'Ocurrió un error. Inténtalo de nuevo.');
         res.redirect('/login');
     }
+});
+
+// Ruta para mostrar el formulario de login
+router.get('/login', (req, res) => {
+    res.render('login', {
+        message: req.flash('error'),
+        success: req.flash('success')
+    });
 });
 
 // Ruta para cerrar sesión
