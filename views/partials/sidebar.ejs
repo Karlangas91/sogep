@@ -4,9 +4,13 @@
         <span class="brand-text font-weight-light">SOGEP</span>
     </a>
 
-    <!-- Botón de fijar la barra lateral -->
-    <div class="sidebar-toggle-container">
-        <button id="toggleSidebar" class="btn btn-sm btn-secondary">☰</button>
+    <!-- Switch para fijar la barra lateral -->
+    <div class="sidebar-toggle-container text-center p-2">
+        <label class="switch">
+            <input type="checkbox" id="toggleSidebarSwitch">
+            <span class="slider round"></span>
+        </label>
+        <small class="text-white d-block">Fijar Barra</small>
     </div>
 
     <!-- Menú lateral -->
@@ -35,3 +39,80 @@
         </nav>
     </div>
 </aside>
+
+<!-- Estilos para el Switch -->
+<style>
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 40px;
+        height: 20px;
+    }
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: .4s;
+        border-radius: 20px;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 14px;
+        width: 14px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+    }
+
+    input:checked + .slider {
+        background-color: #28a745;
+    }
+
+    input:checked + .slider:before {
+        transform: translateX(20px);
+    }
+</style>
+
+<!-- Script para gestionar el Switch y la barra lateral -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const sidebar = document.querySelector('.main-sidebar');
+        const toggleSidebarSwitch = document.getElementById('toggleSidebarSwitch');
+
+        // Cargar estado guardado en localStorage
+        const isSidebarFixed = localStorage.getItem('sidebarFixed') === 'true';
+        toggleSidebarSwitch.checked = isSidebarFixed;
+        if (isSidebarFixed) {
+            sidebar.classList.add('sidebar-fixed');
+            document.body.classList.add('sidebar-expanded');
+        }
+
+        // Evento para cambiar estado de la barra lateral
+        toggleSidebarSwitch.addEventListener('change', function () {
+            if (this.checked) {
+                sidebar.classList.add('sidebar-fixed');
+                document.body.classList.add('sidebar-expanded');
+                localStorage.setItem('sidebarFixed', 'true');
+            } else {
+                sidebar.classList.remove('sidebar-fixed');
+                document.body.classList.remove('sidebar-expanded');
+                localStorage.setItem('sidebarFixed', 'false');
+            }
+        });
+    });
+</script>
