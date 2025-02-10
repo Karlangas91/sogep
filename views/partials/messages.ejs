@@ -1,17 +1,19 @@
-<% if (successMessage) { %>
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <%= successMessage %>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-<% } %>
+<div class="container mt-3">
+    <% if (successMessage) { %>
+        <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+            ✅ <strong>Éxito:</strong> <%= successMessage %>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    <% } %>
 
-<% if (errorMessage) { %>
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <%= errorMessage %>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-<% } %>
+    <% if (errorMessage) { %>
+        <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+            ❌ <strong>Error:</strong> <%= errorMessage %>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    <% } %>
+</div>
