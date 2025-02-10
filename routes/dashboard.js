@@ -16,8 +16,8 @@ router.get('/', isAuthenticated, (req, res) => {
         title: 'Dashboard', 
         user: req.session.user, // Pasamos los datos del usuario a la vista
         currentPage: 'dashboard'  // ✅ Pasamos la variable a la vista
-        successMessage: req.flash('successMessage'),
-        errorMessage: req.flash('errorMessage')
+        successMessage: req.flash('successMessage'), // ✅ Corrección aquí
+        errorMessage: req.flash('errorMessage') // ✅ Agregado para manejar errores también
     });
 });
 
