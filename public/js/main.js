@@ -1,22 +1,20 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const sidebar = document.querySelector(".main-sidebar");
     const sidebarToggle = document.getElementById("sidebarToggle");
+    const body = document.body;
 
-    // Revisar estado guardado en localStorage
-    if (localStorage.getItem("sidebarCollapsed") === "true") {
-        sidebar.classList.add("sidebar-collapsed");
-        sidebarToggle.checked = false;
-    } else {
+    // Revisar si hay preferencia guardada
+    if (localStorage.getItem("sidebarFixed") === "true") {
         sidebarToggle.checked = true;
+        body.classList.add("sidebar-collapse");
     }
 
     sidebarToggle.addEventListener("change", function () {
         if (this.checked) {
-            sidebar.classList.remove("sidebar-collapsed");
-            localStorage.setItem("sidebarCollapsed", "false");
+            body.classList.add("sidebar-collapse");
+            localStorage.setItem("sidebarFixed", "true");
         } else {
-            sidebar.classList.add("sidebar-collapsed");
-            localStorage.setItem("sidebarCollapsed", "true");
+            body.classList.remove("sidebar-collapse");
+            localStorage.setItem("sidebarFixed", "false");
         }
     });
 });

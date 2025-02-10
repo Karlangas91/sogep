@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %> - SOGEP</title>
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
     <!-- AdminLTE CSS -->
@@ -12,13 +13,56 @@
     <link rel="stylesheet" href="/css/custom.css">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
-    <!-- Contenido -->
-    <%- body %>
-    <!-- jQuery -->
+
+    <!-- Sidebar -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <a href="/dashboard" class="brand-link">
+            <span class="brand-text font-weight-light">SOGEP</span>
+        </a>
+
+        <!-- Switch para fijar/desfijar la barra lateral -->
+        <div class="sidebar-toggle-container text-center my-3">
+            <label class="switch">
+                <input type="checkbox" id="sidebarToggle">
+                <span class="slider round"></span>
+            </label>
+        </div>
+
+        <div class="sidebar">
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
+                    <li class="nav-item">
+                        <a href="/dashboard" class="nav-link <%= currentPage === 'dashboard' ? 'active' : '' %>">
+                            <i class="nav-icon fas fa-home"></i>
+                            <p>Dashboard</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/users" class="nav-link <%= currentPage === 'users' ? 'active' : '' %>">
+                            <i class="nav-icon fas fa-users"></i>
+                            <p>Gestión de Usuarios</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/logout" class="nav-link">
+                            <i class="nav-icon fas fa-sign-out-alt"></i>
+                            <p>Salir</p>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </aside>
+
+    <!-- Contenido de la página -->
+    <div class="content-wrapper">
+        <%- body %>
+    </div>
+
+    <!-- Scripts -->
     <script src="/adminlte/plugins/jquery/jquery.min.js"></script>
-    <!-- Bootstrap 4 -->
     <script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- AdminLTE App -->
     <script src="/adminlte/dist/js/adminlte.min.js"></script>
+    <script src="/js/main.js"></script> <!-- Archivo donde agregaremos la lógica del switch -->
 </body>
 </html>
