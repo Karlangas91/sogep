@@ -1,88 +1,52 @@
 const express = require('express');
+const router = express.Router();
 const bcrypt = require('bcryptjs');
 const pool = require('../config/database');
 
-const router = express.Router();
-
-// Middleware para verificar sesión
-function authMiddleware(req, res, next) {
-    if (!req.session.user) {
-        return res.redirect('/login');
-    }
-    next();
-}
-
-// Intentos fallidos por usuario (temporal en sesión)
-const failedAttempts = {};
-
-// Página de Login
+// Ruta para mostrar el formulario de inicio de sesión
 router.get('/login', (req, res) => {
-    res.render('login', { 
-        message: req.session.message, 
-        username: req.session.username || '' 
-    });
-    req.session.message = null;
+    res.render('login', { title: 'Iniciar Sesión' });
 });
 
-// Procesar Login
+// Ruta para procesar el inicio de sesión
 router.post('/login', async (req, res) => {
     const { username, password } = req.body;
 
     try {
-        const result = await pool.query("SELECT * FROM users WHERE username = $1", [username]);
+        const user = await pool.query("SELECT * FROM users WHERE username = $1", [username]);
 
-        // Si el usuario no existe
-        if (result.rows.length === 0) {
-            req.session.message = '❌ Usuario no encontrado.';
-            req.session.username = username;
+        if (user.rows.length === 0) {
+            req.flash('message', 'Usuario no encontrado');
+            req.flash('username', username);
             return res.redirect('/login');
         }
 
-        const user = result.rows[0];
+        const validPassword = await bcrypt.compare(password, user.rows[0].password);
 
-        // Verificar si el usuario ha excedido intentos fallidos
-        if (failedAttempts[username] && failedAttempts[username].attempts >= 3) {
-            const diff = (Date.now() - failedAttempts[username].time) / 1000;
-            if (diff < 300) {
-                req.session.message = `⚠ Demasiados intentos fallidos. Intenta nuevamente en ${Math.ceil(300 - diff)} segundos.`;
-                return res.redirect('/login');
-            } else {
-                failedAttempts[username] = { attempts: 0, time: null };
-            }
-        }
-
-        // Comparar contraseña
-        if (!(await bcrypt.compare(password, user.password))) {
-            // Registrar intento fallido
-            if (!failedAttempts[username]) {
-                failedAttempts[username] = { attempts: 0, time: null };
-            }
-            failedAttempts[username].attempts++;
-            failedAttempts[username].time = Date.now();
-
-            req.session.message = `❌ Contraseña incorrecta. Intento ${failedAttempts[username].attempts}/3`;
-            req.session.username = username;
+        if (!validPassword) {
+            req.flash('message', 'Contraseña incorrecta');
+            req.flash('username', username);
             return res.redirect('/login');
         }
 
-        // Si el login es exitoso, resetear intentos fallidos
-        failedAttempts[username] = { attempts: 0, time: null };
-
-        // Guardamos la sesión del usuario
-        req.session.user = { id: user.id, username: user.username };
-        
-        // Redirigir al dashboard
+        req.session.userId = user.rows[0].id;
         res.redirect('/dashboard');
-    } catch (err) {
-        console.error("❌ Error en el login:", err);
-        req.session.message = '❌ Error en el servidor, intenta de nuevo.';
+    } catch (error) {
+        console.error("Error en el login:", error);
+        req.flash('message', 'Error en el servidor');
+        req.flash('username', username);
         res.redirect('/login');
     }
 });
 
-// Cerrar sesión (logout)
+// Ruta para cerrar sesión
 router.get('/logout', (req, res) => {
-    req.session.destroy(() => res.redirect('/login'));
+    req.session.destroy((err) => {
+        if (err) {
+            console.error("Error al cerrar sesión:", err);
+        }
+        res.redirect('/login');
+    });
 });
 
 module.exports = router;

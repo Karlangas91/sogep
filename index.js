@@ -1,28 +1,42 @@
 const express = require('express');
 const path = require('path');
-
+const session = require('express-session');
+const flash = require('connect-flash');
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-const indexRouter = require('./routes/index');
-
-
-// Configuración del motor de vistas EJS
+// Configuración de EJS como motor de plantillas
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Middleware para servir archivos estáticos
+// Middleware para analizar datos de formularios
+app.use(express.urlencoded({ extended: false }));
+
+// Configuración de archivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Importar rutas
-const indexRoutes = require('./routes/index');
-const dashboardRoutes = require('./routes/dashboard');
+// Configuración de sesiones
+app.use(session({
+    secret: 'tu_secreto',
+    resave: false,
+    saveUninitialized: true
+}));
 
-// Usar rutas
-app.use('/', indexRoutes);
-app.use('/dashboard', dashboardRoutes);
+// Middleware para mensajes flash
+app.use(flash());
+
+// Middleware para pasar variables globales a las vistas
+app.use((req, res, next) => {
+    res.locals.message = req.flash('message');
+    res.locals.username = req.flash('username');
+    next();
+});
+
+// Rutas
+const authRoutes = require('./routes/auth');
+app.use('/', authRoutes);
 
 // Iniciar el servidor
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
