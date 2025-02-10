@@ -19,16 +19,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
     secret: 'tu_secreto',
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: false // Evita crear sesiones vacías
 }));
 
 // Middleware para mensajes flash
 app.use(flash());
 
-// Middleware para pasar variables globales a las vistas
+// Middleware global para manejar los mensajes flash correctamente
 app.use((req, res, next) => {
-    res.locals.message = req.flash('message');
-    res.locals.username = req.flash('username');
     res.locals.successMessage = req.flash('successMessage');
     res.locals.errorMessage = req.flash('errorMessage');
     next();
@@ -47,13 +45,8 @@ app.use('/users', usersRoutes);
 const rolesRoutes = require('./routes/roles');
 app.use('/roles', rolesRoutes);
 
-
-// Scripts para inicialización de base de datos
-
-
 // Iniciar el servidor
 const PORT = process.env.PORT || 3000;
-
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
