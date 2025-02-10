@@ -11,9 +11,18 @@
     </section>
 
     <section class="content">
-        <% if (message) { %>
+        <% if (message && message.length > 0) { %>
             <div class="alert alert-success"><%= message %></div>
         <% } %>
+        
+        <% if (successMessage && successMessage.length > 0) { %>
+            <div class="alert alert-success"><%= successMessage %></div>
+        <% } %>
+        
+        <% if (errorMessage && errorMessage.length > 0) { %>
+            <div class="alert alert-danger"><%= errorMessage %></div>
+        <% } %>
+        
 
         <a href="/users/create" class="btn btn-primary mb-3">Agregar Usuario</a>
 

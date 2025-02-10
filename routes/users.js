@@ -15,23 +15,20 @@ function isAuthenticated(req, res, next) {
 // 📌 Listar Usuarios (GET)
 router.get('/', isAuthenticated, async (req, res) => {
     try {
-        const users = await pool.query(`
-            SELECT users.id, users.username, users.email, roles.name AS role 
-            FROM users 
-            LEFT JOIN roles ON users.role_id = roles.id
-        `);
+        const users = await pool.query("SELECT users.id, users.username, users.email, roles.name AS role FROM users LEFT JOIN roles ON users.role_id = roles.id");
         res.render('users/index', { 
             users: users.rows, 
-            successMessage: req.flash('successMessage'),
-            errorMessage: req.flash('errorMessage'),
-            currentPage: 'users' 
+            currentPage: 'users',
+            message: req.flash('message') || '', // 🔹 Asegura que siempre haya un valor
+            successMessage: req.flash('successMessage') || '',
+            errorMessage: req.flash('errorMessage') || ''
         });
     } catch (error) {
         console.error("❌ Error obteniendo usuarios:", error);
-        req.flash('errorMessage', 'Error al obtener usuarios.');
         res.redirect('/dashboard');
     }
 });
+
 
 // 📌 Mostrar formulario para Crear Usuario (GET)
 router.get('/create', isAuthenticated, async (req, res) => {
