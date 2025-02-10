@@ -9,9 +9,18 @@
             <h2>Gestión de Roles</h2>
             <a href="/roles/create" class="btn btn-primary mb-3">➕ Nuevo Rol</a>
 
-            <% if (message) { %>
+            <% if (message && message.length > 0) { %>
                 <p class="alert alert-success"><%= message %></p>
             <% } %>
+            
+            <% if (successMessage && successMessage.length > 0) { %>
+                <p class="alert alert-success"><%= successMessage %></p>
+            <% } %>
+            
+            <% if (errorMessage && errorMessage.length > 0) { %>
+                <p class="alert alert-danger"><%= errorMessage %></p>
+            <% } %>
+            
 
             <table class="table table-striped">
                 <thead>

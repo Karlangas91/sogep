@@ -17,16 +17,17 @@ router.get('/', isAuthenticated, async (req, res) => {
         const roles = await pool.query("SELECT * FROM roles");
         res.render('roles/index', { 
             roles: roles.rows, 
-            successMessage: req.flash('successMessage'),
-            errorMessage: req.flash('errorMessage'),
-            currentPage: 'roles'
+            currentPage: 'roles',
+            message: req.flash('message') || '', // 🔹 Asegura que siempre haya un valor
+            successMessage: req.flash('successMessage') || '',
+            errorMessage: req.flash('errorMessage') || ''
         });
     } catch (error) {
         console.error("❌ Error obteniendo roles:", error);
-        req.flash('errorMessage', 'Error al obtener los roles.');
         res.redirect('/dashboard');
     }
 });
+
 
 // 📌 Mostrar formulario para Crear Rol (GET)
 router.get('/create', isAuthenticated, (req, res) => {
