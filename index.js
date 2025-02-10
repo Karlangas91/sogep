@@ -46,7 +46,9 @@ app.use('/users', usersRoutes);
 const PORT = process.env.PORT || 3000;
 
 
-const addRoleColumn = require('./scripts/addRoleColumn');
+const addRoleColumn = require('./scripts/addRoleColumn'); 
+
+// Ejecutar la función
 addRoleColumn();
 
 

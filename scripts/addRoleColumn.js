@@ -11,4 +11,5 @@ async function addRoleColumn() {
     }
 }
 
-addRoleColumn();
+// Exportar la función correctamente
+module.exports = addRoleColumn;
