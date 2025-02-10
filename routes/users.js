@@ -8,26 +8,45 @@ function isAuthenticated(req, res, next) {
     if (req.session.user) {
         return next();
     }
-    req.flash('message', 'Debes iniciar sesión para acceder a esta página.');
+    req.flash('errorMessage', 'Debes iniciar sesión para acceder a esta página.');
     res.redirect('/login');
 }
 
 // 📌 Listar Usuarios (GET)
 router.get('/', isAuthenticated, async (req, res) => {
     try {
-        const users = await pool.query("SELECT * FROM users");
-        res.render('users/index', { users: users.rows, currentPage: 'users' });
+        const users = await pool.query(`
+            SELECT users.id, users.username, users.email, roles.name AS role 
+            FROM users 
+            LEFT JOIN roles ON users.role_id = roles.id
+        `);
+        res.render('users/index', { 
+            users: users.rows, 
+            successMessage: req.flash('successMessage'),
+            errorMessage: req.flash('errorMessage'),
+            currentPage: 'users' 
+        });
     } catch (error) {
         console.error("❌ Error obteniendo usuarios:", error);
+        req.flash('errorMessage', 'Error al obtener usuarios.');
         res.redirect('/dashboard');
     }
 });
 
-
 // 📌 Mostrar formulario para Crear Usuario (GET)
 router.get('/create', isAuthenticated, async (req, res) => {
-    const roles = await pool.query("SELECT * FROM roles");
-    res.render('users/create', { roles: roles.rows, message: req.flash('message') });
+    try {
+        const roles = await pool.query("SELECT * FROM roles");
+        res.render('users/create', { 
+            roles: roles.rows, 
+            successMessage: req.flash('successMessage'),
+            errorMessage: req.flash('errorMessage')
+        });
+    } catch (error) {
+        console.error("❌ Error obteniendo roles:", error);
+        req.flash('errorMessage', 'Error al cargar los roles.');
+        res.redirect('/users');
+    }
 });
 
 // 📌 Crear Usuario (POST)
@@ -55,14 +74,21 @@ router.get('/edit/:id', isAuthenticated, async (req, res) => {
     try {
         const user = await pool.query("SELECT * FROM users WHERE id = $1", [req.params.id]);
         const roles = await pool.query("SELECT * FROM roles");
+
         if (user.rows.length === 0) {
-            req.flash('message', 'Usuario no encontrado.');
+            req.flash('errorMessage', 'Usuario no encontrado.');
             return res.redirect('/users');
         }
 
-        res.render('users/edit', { user: user.rows[0], roles: roles.rows, message: req.flash('message') });
+        res.render('users/edit', { 
+            user: user.rows[0], 
+            roles: roles.rows, 
+            successMessage: req.flash('successMessage'),
+            errorMessage: req.flash('errorMessage')
+        });
     } catch (error) {
         console.error("❌ Error obteniendo usuario:", error);
+        req.flash('errorMessage', 'Error al obtener el usuario.');
         res.redirect('/users');
     }
 });
@@ -74,8 +100,8 @@ router.post('/edit/:id', isAuthenticated, async (req, res) => {
         await pool.query("UPDATE users SET username = $1, email = $2, role_id = $3 WHERE id = $4",
             [username, email, role_id, req.params.id]);
 
-            req.flash('successMessage', '✅ Usuario actualizado correctamente.');
-            res.redirect('/users');
+        req.flash('successMessage', '✅ Usuario actualizado correctamente.');
+        res.redirect('/users');
     } catch (error) {
         console.error("❌ Error actualizando usuario:", error);
         req.flash('errorMessage', '❌ Error al actualizar el usuario.');
@@ -88,16 +114,15 @@ router.get('/delete/:id', isAuthenticated, async (req, res) => {
     try {
         await pool.query("DELETE FROM users WHERE id = $1", [req.params.id]);
         req.flash('successMessage', '✅ Usuario eliminado correctamente.');
+        res.redirect('/users');
     } catch (error) {
         console.error("❌ Error eliminando usuario:", error);
         req.flash('errorMessage', '❌ Error al eliminar el usuario.');
+        res.redirect('/users');
     }
-    res.redirect('/users');
 });
 
-module.exports = router;
-
-
+// 📌 Ruta de depuración para obtener roles (GET)
 router.get('/debug-db-roles', async (req, res) => {
     try {
         const roles = await pool.query("SELECT * FROM roles");
@@ -107,3 +132,5 @@ router.get('/debug-db-roles', async (req, res) => {
         res.status(500).send("Error obteniendo roles.");
     }
 });
+
+module.exports = router;
