@@ -45,6 +45,11 @@ app.use('/users', usersRoutes);
 // Iniciar el servidor
 const PORT = process.env.PORT || 3000;
 
+
+const addRoleColumn = require('./scripts/addRoleColumn');
+addRoleColumn();
+
+
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });

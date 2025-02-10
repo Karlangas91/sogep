@@ -1,19 +1,14 @@
 const pool = require('../config/database');
 
-async function createRolesTable() {
-    const query = `
-        CREATE TABLE IF NOT EXISTS roles (
-            id SERIAL PRIMARY KEY,
-            name VARCHAR(50) UNIQUE NOT NULL
-        );
-    `;
-
+async function addRoleColumn() {
     try {
-        await pool.query(query);
-        console.log("✅ Tabla 'roles' creada correctamente.");
+        await pool.query(`
+            ALTER TABLE users ADD COLUMN role_id INTEGER REFERENCES roles(id) DEFAULT 1;
+        `);
+        console.log("✅ Columna 'role_id' añadida con éxito.");
     } catch (error) {
-        console.error("❌ Error creando la tabla 'roles':", error);
+        console.error("❌ Error al añadir la columna 'role_id':", error);
     }
 }
 
-module.exports = createRolesTable;
+addRoleColumn();

@@ -99,3 +99,14 @@ router.get('/delete/:id', isAuthenticated, async (req, res) => {
 });
 
 module.exports = router;
+
+
+router.get('/debug-db-roles', async (req, res) => {
+    try {
+        const roles = await pool.query("SELECT * FROM roles");
+        res.json(roles.rows);
+    } catch (error) {
+        console.error("❌ Error obteniendo roles:", error);
+        res.status(500).send("Error obteniendo roles.");
+    }
+});
