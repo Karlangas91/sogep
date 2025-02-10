@@ -43,17 +43,7 @@ const usersRoutes = require('./routes/users');
 app.use('/users', usersRoutes);
 
 // Scripts para inicialización de base de datos
-const addRoles = require('./scripts/addRoles');
-const addRoleColumn = require('./scripts/addRoleColumn');
 
-async function setupDatabase() {
-    await addRoles(); // Primero aseguramos que los roles existen
-    await addRoleColumn(); // Luego agregamos la columna role_id
-}
-
-setupDatabase().then(() => {
-    console.log("✅ Configuración de la base de datos completada.");
-});
 
 // Iniciar el servidor
 const PORT = process.env.PORT || 3000;
