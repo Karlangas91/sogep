@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-// Ruta de inicio
-router.get('/', (req, res) => {
-    res.send('Bienvenido a SOGEP - Página de inicio.');
+// Ruta para la página de inicio de sesión
+router.get('/login/', (req, res) => {
+    res.render('login', { title: 'Inicio de Sesión' });
 });
 
 module.exports = router;
