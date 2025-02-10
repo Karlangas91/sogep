@@ -12,12 +12,33 @@
                         <p>Dashboard</p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="/users" class="nav-link <%= currentPage === 'users' ? 'active' : '' %>">
-                        <i class="nav-icon fas fa-users"></i>
-                        <p>Gestión de Usuarios</p>
+
+                <!-- NUEVO MENÚ DE CONFIGURACIÓN -->
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-cog"></i>
+                        <p>
+                            Configuración
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
                     </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="/users" class="nav-link <%= currentPage === 'users' ? 'active' : '' %>">
+                                <i class="fas fa-users nav-icon"></i>
+                                <p>Gestión de Usuarios</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/roles" class="nav-link <%= currentPage === 'roles' ? 'active' : '' %>">
+                                <i class="fas fa-user-shield nav-icon"></i>
+                                <p>Gestión de Roles</p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
+                <!-- FIN NUEVO MENÚ -->
+
                 <li class="nav-item">
                     <a href="/logout" class="nav-link">
                         <i class="nav-icon fas fa-sign-out-alt"></i>
