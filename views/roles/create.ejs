@@ -7,8 +7,12 @@
         <div class="container">
             <h2>Crear Nuevo Rol</h2>
 
-            <% if (message) { %>
-                <p class="alert alert-danger"><%= message %></p>
+            <% if (errorMessage) { %>
+                <p class="alert alert-danger"><%= errorMessage %></p>
+            <% } %>
+
+            <% if (successMessage) { %>
+                <p class="alert alert-success"><%= successMessage %></p>
             <% } %>
 
             <form action="/roles/create" method="POST">
@@ -23,4 +27,3 @@
         </div>
     </section>
 </div>
-

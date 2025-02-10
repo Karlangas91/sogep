@@ -32,10 +32,12 @@ router.get('/', isAuthenticated, async (req, res) => {
 // 📌 Mostrar formulario para Crear Rol (GET)
 router.get('/create', isAuthenticated, (req, res) => {
     res.render('roles/create', { 
-        successMessage: req.flash('successMessage'),
-        errorMessage: req.flash('errorMessage') 
+        currentPage: 'roles', // 🔹 Resalta el menú activo
+        successMessage: req.flash('successMessage') || '',
+        errorMessage: req.flash('errorMessage') || ''
     });
 });
+
 
 // 📌 Crear un nuevo Rol (POST)
 router.post('/create', isAuthenticated, async (req, res) => {
