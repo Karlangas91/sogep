@@ -1,0 +1,39 @@
+<%- include('../partials/header') %>
+<%- include('../partials/sidebar') %>
+
+<div class="content-wrapper">
+    <section class="content">
+        <div class="container">
+            <h2>Gestión de Roles</h2>
+            <a href="/roles/create" class="btn btn-primary mb-3">➕ Nuevo Rol</a>
+
+            <% if (message) { %>
+                <p class="alert alert-success"><%= message %></p>
+            <% } %>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre del Rol</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% roles.forEach(role => { %>
+                        <tr>
+                            <td><%= role.id %></td>
+                            <td><%= role.name %></td>
+                            <td>
+                                <a href="/roles/edit/<%= role.id %>" class="btn btn-warning">✏ Editar</a>
+                                <a href="/roles/delete/<%= role.id %>" class="btn btn-danger" onclick="return confirm('¿Estás seguro?')">🗑 Eliminar</a>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,26 @@
+<%- include('../partials/header') %>
+<%- include('../partials/sidebar') %>
+
+<div class="content-wrapper">
+    <section class="content">
+        <div class="container">
+            <h2>Editar Rol</h2>
+
+            <% if (message) { %>
+                <p class="alert alert-danger"><%= message %></p>
+            <% } %>
+
+            <form action="/roles/edit/<%= role.id %>" method="POST">
+                <div class="mb-3">
+                    <label for="name">Nombre del Rol:</label>
+                    <input type="text" name="name" class="form-control" value="<%= role.name %>" required>
+                </div>
+
+                <button type="submit" class="btn btn-success">Actualizar</button>
+                <a href="/roles" class="btn btn-secondary">Cancelar</a>
+            </form>
+        </div>
+    </section>
+</div>
+
+<%- include('../partials/footer') %>

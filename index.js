@@ -42,6 +42,10 @@ app.use('/dashboard', dashboardRoutes);
 const usersRoutes = require('./routes/users');
 app.use('/users', usersRoutes);
 
+const rolesRoutes = require('./routes/roles');
+app.use('/roles', rolesRoutes);
+
+
 // Scripts para inicialización de base de datos
 
 
