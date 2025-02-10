@@ -3,7 +3,7 @@
 
 <div class="content-wrapper">
     <section class="content-header">
-        <h1>Agregar Usuario</h1>
+        <h1>Editar Usuario</h1>
     </section>
 
     <section class="content">
@@ -11,28 +11,24 @@
             <div class="alert alert-danger"><%= message %></div>
         <% } %>
 
-        <form action="/users/create" method="POST">
+        <form action="/users/edit/<%= user.id %>" method="POST">
             <div class="mb-3">
                 <label for="username">Usuario</label>
-                <input type="text" name="username" class="form-control" required>
+                <input type="text" name="username" class="form-control" value="<%= user.username %>" required>
             </div>
             <div class="mb-3">
                 <label for="email">Correo</label>
-                <input type="email" name="email" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="password">Contraseña</label>
-                <input type="password" name="password" class="form-control" required>
+                <input type="email" name="email" class="form-control" value="<%= user.email %>" required>
             </div>
             <div class="mb-3">
                 <label for="role_id">Rol</label>
                 <select name="role_id" class="form-control">
                     <% roles.forEach(role => { %>
-                        <option value="<%= role.id %>"><%= role.name %></option>
+                        <option value="<%= role.id %>" <%= role.id === user.role_id ? "selected" : "" %>><%= role.name %></option>
                     <% }); %>
                 </select>
             </div>
-            <button type="submit" class="btn btn-success">Guardar Usuario</button>
+            <button type="submit" class="btn btn-success">Actualizar</button>
             <a href="/users" class="btn btn-secondary">Cancelar</a>
         </form>
     </section>
