@@ -19,7 +19,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
     secret: 'tu_secreto',
     resave: false,
-    saveUninitialized: false // Evita crear sesiones vacías
+    saveUninitialized: false // 🔹 Evita crear sesiones vacías
 }));
 
 // Middleware para mensajes flash
@@ -27,8 +27,8 @@ app.use(flash());
 
 // Middleware global para manejar los mensajes flash correctamente
 app.use((req, res, next) => {
-    res.locals.successMessage = req.flash('successMessage');
-    res.locals.errorMessage = req.flash('errorMessage');
+    res.locals.successMessage = req.flash('successMessage') || null;
+    res.locals.errorMessage = req.flash('errorMessage') || null;
     next();
 });
 
@@ -48,5 +48,5 @@ app.use('/roles', rolesRoutes);
 // Iniciar el servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Servidor corriendo en http://localhost:${PORT}`);
+    console.log(`✅ Servidor corriendo en http://localhost:${PORT}`);
 });
