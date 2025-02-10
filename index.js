@@ -29,6 +29,7 @@ app.use(flash());
 app.use((req, res, next) => {
     res.locals.successMessage = req.flash('successMessage') || null;
     res.locals.errorMessage = req.flash('errorMessage') || null;
+    res.locals.currentPage = '';
     next();
 });
 
