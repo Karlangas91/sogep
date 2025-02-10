@@ -41,6 +41,21 @@ app.use('/dashboard', dashboardRoutes);
 
 // Iniciar el servidor
 const PORT = process.env.PORT || 3000;
+
+const createRolesTable = require('./scripts/createRolesTable');
+const updateUsersTable = require('./scripts/updateUsersTable');
+
+app.get('/run-scripts', async (req, res) => {
+    try {
+        await createRolesTable();
+        await updateUsersTable();
+        res.send("✅ Scripts ejecutados correctamente.");
+    } catch (error) {
+        console.error("❌ Error ejecutando scripts:", error);
+        res.status(500).send("Error ejecutando los scripts.");
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
