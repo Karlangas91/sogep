@@ -28,7 +28,8 @@ router.get('/', isAuthenticated, async (req, res) => {
 
         res.render('users/index', { 
             users: users.rows, 
-            currentPage: 'users', 
+            currentPage: 'users',
+            message: req.flash('message'), 
             search 
         });
     } catch (error) {
