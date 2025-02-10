@@ -1,9 +1,21 @@
 const express = require('express');
 const router = express.Router();
 
-// Ruta para el dashboard
-router.get('/', (req, res) => {
-    res.render('dashboard');
+// Middleware para verificar si el usuario está autenticado
+function isAuthenticated(req, res, next) {
+    if (req.session.user) {
+        return next();
+    }
+    req.flash('message', 'Debes iniciar sesión para acceder al dashboard.');
+    res.redirect('/login');
+}
+
+// Ruta del Dashboard (protegida)
+router.get('/', isAuthenticated, (req, res) => {
+    res.render('dashboard', { 
+        title: 'Dashboard', 
+        user: req.session.user // Pasamos los datos del usuario a la vista
+    });
 });
 
 module.exports = router;

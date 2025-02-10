@@ -35,6 +35,10 @@ app.use((req, res, next) => {
 const authRoutes = require('./routes/auth');
 app.use('/', authRoutes);
 
+const dashboardRoutes = require('./routes/dashboard');
+
+app.use('/dashboard', dashboardRoutes);
+
 // Iniciar el servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
