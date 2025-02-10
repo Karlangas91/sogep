@@ -1,13 +1,14 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <!-- Contenedor del logo y el switch -->
-    <div class="brand-container d-flex justify-content-between align-items-center p-2">
+    <!-- Contenedor del logo y switch -->
+    <div class="brand-container d-flex align-items-center justify-content-between p-2">
         <a href="/dashboard" class="brand-link">
             <span class="brand-text font-weight-light">SOGEP</span>
         </a>
-        <div class="custom-control custom-switch">
-            <input type="checkbox" class="custom-control-input" id="sidebarSwitch">
-            <label class="custom-control-label" for="sidebarSwitch"></label>
-        </div>
+        <!-- Switch para fijar la barra -->
+        <label class="switch">
+            <input type="checkbox" id="sidebarToggle">
+            <span class="slider round"></span>
+        </label>
     </div>
 
     <!-- Menú lateral -->
@@ -36,38 +37,3 @@
         </nav>
     </div>
 </aside>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const sidebar = document.querySelector(".main-sidebar");
-        const switchBtn = document.getElementById("sidebarSwitch");
-        
-        // Verificar estado guardado en localStorage
-        if (localStorage.getItem("sidebarFixed") === "true") {
-            sidebar.classList.add("sidebar-fixed");
-            switchBtn.checked = true;
-        }
-
-        switchBtn.addEventListener("change", function () {
-            if (this.checked) {
-                sidebar.classList.add("sidebar-fixed");
-                localStorage.setItem("sidebarFixed", "true");
-            } else {
-                sidebar.classList.remove("sidebar-fixed");
-                localStorage.setItem("sidebarFixed", "false");
-            }
-        });
-    });
-</script>
-
-<style>
-    .brand-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .sidebar-fixed {
-        position: fixed;
-        height: 100vh;
-    }
-</style>
