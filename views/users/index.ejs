@@ -26,6 +26,12 @@
 
         <a href="/users/create" class="btn btn-primary mb-3">Agregar Usuario</a>
 
+        <!-- Formulario de búsqueda -->
+    <form action="/users" method="GET" class="form-inline mb-3">
+        <input type="text" name="search" class="form-control mr-2" placeholder="Buscar usuario, email o rol" value="<%= search %>">
+        <button type="submit" class="btn btn-primary">🔍 Buscar</button>
+    </form>
+
         <table class="table table-bordered">
             <thead>
                 <tr>
