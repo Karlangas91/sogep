@@ -16,7 +16,8 @@ function isAuthenticated(req, res, next) {
 router.get('/login', (req, res) => {
     res.render('login', {
         successMessage: req.flash('successMessage'),
-        errorMessage: req.flash('errorMessage')
+        errorMessage: req.flash('errorMessage'),
+        username: req.flash('username') || '' // 🔹 Asegura que username nunca sea undefined
     });
 });
 
