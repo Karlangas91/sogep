@@ -14,11 +14,10 @@ function isAuthenticated(req, res, next) {
 router.get('/', isAuthenticated, (req, res) => {
     res.render('dashboard', { 
         title: 'Dashboard', 
-        user: req.session.user, // Pasamos los datos del usuario a la vista
-        currentPage: 'dashboard',  // ✅ Pasamos la variable a la vista
-        successMessage: req.flash('successMessage'), // ✅ Corrección aquí
-        errorMessage: req.flash('errorMessage') // ✅ Agregado para manejar errores también
+        user: req.session.user, 
+        currentPage: 'dashboard'  // Definición de currentPage
     });
 });
+
 
 module.exports = router;
