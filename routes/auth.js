@@ -1,50 +1,48 @@
 const express = require('express');
-const router = express.Router();
 const bcrypt = require('bcryptjs');
 const pool = require('../config/database');
-
-// Ruta para mostrar el formulario de inicio de sesión
-router.get('/login', (req, res) => {
-    res.render('login', { title: 'Iniciar Sesión' });
-});
+const router = express.Router();
 
 // Ruta para procesar el inicio de sesión
 router.post('/login', async (req, res) => {
     const { username, password } = req.body;
 
     try {
-        const user = await pool.query("SELECT * FROM users WHERE username = $1", [username]);
+        // Buscar usuario en la base de datos
+        const result = await pool.query("SELECT * FROM users WHERE username = $1", [username]);
 
-        if (user.rows.length === 0) {
-            req.flash('message', 'Usuario no encontrado');
-            req.flash('username', username);
+        if (result.rows.length === 0) {
+            req.flash('message', 'Usuario o contraseña incorrectos.');
             return res.redirect('/login');
         }
 
-        const validPassword = await bcrypt.compare(password, user.rows[0].password);
+        const user = result.rows[0];
 
-        if (!validPassword) {
-            req.flash('message', 'Contraseña incorrecta');
-            req.flash('username', username);
+        // Verificar contraseña
+        const passwordMatch = await bcrypt.compare(password, user.password);
+        if (!passwordMatch) {
+            req.flash('message', 'Usuario o contraseña incorrectos.');
             return res.redirect('/login');
         }
 
-        req.session.userId = user.rows[0].id;
+        // Guardar usuario en la sesión
+        req.session.user = {
+            id: user.id,
+            username: user.username,
+            email: user.email
+        };
+
         res.redirect('/dashboard');
     } catch (error) {
-        console.error("Error en el login:", error);
-        req.flash('message', 'Error en el servidor');
-        req.flash('username', username);
+        console.error("Error autenticando usuario:", error);
+        req.flash('message', 'Ocurrió un error. Inténtalo de nuevo.');
         res.redirect('/login');
     }
 });
 
 // Ruta para cerrar sesión
 router.get('/logout', (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
-            console.error("Error al cerrar sesión:", err);
-        }
+    req.session.destroy(() => {
         res.redirect('/login');
     });
 });
