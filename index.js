@@ -47,6 +47,10 @@ app.use('/users', usersRoutes);
 const rolesRoutes = require('./routes/roles');
 app.use('/roles', rolesRoutes);
 
+const clientsRoutes = require('./routes/clients');
+app.use('/clients', clientsRoutes);
+
+
 // Iniciar el servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
