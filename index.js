@@ -32,6 +32,7 @@ app.use((req, res, next) => {
     res.locals.currentPage = '';
     next();
 });
+app.use(express.static('public'));
 
 // Rutas
 const authRoutes = require('./routes/auth');
