@@ -8,6 +8,62 @@
     </section>
 
     <section class="content">
+
+        <!-- Formulario para agregar un nuevo cliente -->
+        <form id="createClientForm">
+            <h4>Agregar Nuevo Cliente</h4>
+            <div class="form-group">
+                <label for="codigo">Código:</label>
+                <input type="text" id="codigo" name="codigo" class="form-control" pattern="\d*" title="Solo se permiten números" required>
+            </div>
+            <div class="form-group">
+                <label for="nombre_comercial">Nombre Comercial:</label>
+                <input type="text" id="nombre_comercial" name="nombre_comercial" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="razon_social">Razón Social:</label>
+                <input type="text" id="razon_social" name="razon_social" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="cedula">Cédula:</label>
+                <input type="text" id="cedula" name="cedula" class="form-control" pattern="\d*" title="Solo se permiten números" required>
+            </div>
+            <div class="form-group">
+                <label for="direccion_oficina">Dirección Oficina:</label>
+                <input type="text" id="direccion_oficina" name="direccion_oficina" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="direccion_entrega1">Dirección de Entrega 1:</label>
+                <input type="text" id="direccion_entrega1" name="direccion_entrega1" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="direccion_entrega2">Dirección de Entrega 2:</label>
+                <input type="text" id="direccion_entrega2" name="direccion_entrega2" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="plazo_credito">Plazo de Crédito:</label>
+                <input type="number" id="plazo_credito" name="plazo_credito" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="estado">Estado:</label>
+                <select id="estado" name="estado" class="form-control" required>
+                    <option value="Activo">Activo</option>
+                    <option value="Inactivo">Inactivo</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="vendedor">Vendedor:</label>
+                <input type="text" id="vendedor" name="vendedor" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="asistente">Asistente:</label>
+                <input type="text" id="asistente" name="asistente" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar Cliente</button>
+        </form>
+
+        <!-- Tabla de Clientes -->
+        <br>
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -38,3 +94,42 @@
 </div>
 
 <%- include('../partials/footer') %>
+
+<script src="/adminlte/plugins/jquery/jquery.min.js"></script>
+<script>
+    // Manejo del formulario con AJAX
+    $(document).ready(function() {
+        $('#createClientForm').submit(function(e) {
+            e.preventDefault();  // Evitar que el formulario recargue la página
+
+            var formData = $(this).serialize();  // Serializa los datos del formulario
+
+            $.ajax({
+                url: '/clients/create',
+                type: 'POST',
+                data: formData,
+                success: function(response) {
+                    alert(response.message);  // Mostrar mensaje de éxito
+                    // Agregar el nuevo cliente a la tabla sin recargar
+                    var newClient = response.client;  // Suponiendo que el servidor devuelve el cliente creado
+                    $('#clientesTable tbody').append(`
+                        <tr>
+                            <td>${newClient.codigo}</td>
+                            <td>${newClient.nombre_comercial}</td>
+                            <td>${newClient.cedula}</td>
+                            <td>${newClient.estado}</td>
+                            <td>${newClient.vendedor}</td>
+                            <td>
+                                <a href="/clients/edit/${newClient.id}" class="btn btn-warning btn-sm">Editar</a>
+                                <a href="/clients/delete/${newClient.id}" class="btn btn-danger btn-sm">Eliminar</a>
+                            </td>
+                        </tr>
+                    `);
+                },
+                error: function(xhr, status, error) {
+                    alert('Hubo un error al crear el cliente');
+                }
+            });
+        });
+    });
+</script>
