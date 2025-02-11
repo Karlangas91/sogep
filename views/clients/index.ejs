@@ -1,0 +1,48 @@
+<%- include('../partials/header') %>
+<%- include('../partials/sidebar') %>
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Gestión de Clientes</h1>
+    </section>
+
+    <section class="content">
+        <a href="/clients/create" class="btn btn-primary mb-3">Agregar Cliente</a>
+
+        <!-- Formulario de búsqueda -->
+        <form action="/clients" method="GET" class="form-inline mb-3">
+            <input type="text" name="search" class="form-control mr-2" placeholder="Buscar cliente por código, nombre o cédula" value="<%= search %>">
+            <button type="submit" class="btn btn-primary">🔍 Buscar</button>
+        </form>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Nombre Comercial</th>
+                    <th>Cédula</th>
+                    <th>Estado</th>
+                    <th>Vendedor</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% clients.forEach(client => { %>
+                    <tr>
+                        <td><%= client.codigo %></td>
+                        <td><%= client.nombre_comercial %></td>
+                        <td><%= client.cedula %></td>
+                        <td><%= client.estado %></td>
+                        <td><%= client.vendedor %></td>
+                        <td>
+                            <a href="/clients/edit/<%= client.id %>" class="btn btn-warning btn-sm">Editar</a>
+                            <a href="/clients/delete/<%= client.id %>" class="btn btn-danger btn-sm">Eliminar</a>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </section>
+</div>
+
+<%- include('../partials/footer') %>
