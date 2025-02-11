@@ -9,9 +9,53 @@
 
     <section class="content">
 
-        <!-- Formulario para agregar un nuevo cliente -->
+       <!-- Botón para abrir el modal -->
+       <button id="openModalBtn" class="btn btn-primary mb-3">Agregar Nuevo Cliente</button>
+
+        <!-- Tabla de Clientes -->
+        <br>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Nombre Comercial</th>
+                    <th>Cédula</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% clients.forEach(client => { %>
+                    <tr>
+                        <td><%= client.codigo %></td>
+                        <td><%= client.nombre_comercial %></td>
+                        <td><%= client.cedula %></td>
+                        <td><%= client.estado %></td>
+                        <td>
+                            <!-- Aquí puedes agregar botones para editar o eliminar -->
+                            <a href="/clients/edit/<%= client.id %>" class="btn btn-warning btn-sm">Editar</a>
+                            <a href="/clients/delete/<%= client.id %>" class="btn btn-danger btn-sm">Eliminar</a>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </section>
+</div>
+
+<%- include('../partials/footer') %>
+
+<!-- Modal de creación de cliente -->
+<div class="modal fade" id="clientModal" tabindex="-1" aria-labelledby="clientModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="clientModalLabel">Agregar Nuevo Cliente</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Formulario dentro del modal -->
         <form id="createClientForm">
-            <h4>Agregar Nuevo Cliente</h4>
             <div class="form-group">
                 <label for="codigo">Código:</label>
                 <input type="text" id="codigo" name="codigo" class="form-control" pattern="\d*" title="Solo se permiten números" required>
@@ -59,77 +103,52 @@
                 <label for="asistente">Asistente:</label>
                 <input type="text" id="asistente" name="asistente" class="form-control" required>
             </div>
-            <button type="submit" class="btn btn-primary">Guardar Cliente</button>
         </form>
-
-        <!-- Tabla de Clientes -->
-        <br>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Código</th>
-                    <th>Nombre Comercial</th>
-                    <th>Cédula</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% clients.forEach(client => { %>
-                    <tr>
-                        <td><%= client.codigo %></td>
-                        <td><%= client.nombre_comercial %></td>
-                        <td><%= client.cedula %></td>
-                        <td><%= client.estado %></td>
-                        <td>
-                            <!-- Aquí puedes agregar botones para editar o eliminar -->
-                            <a href="/clients/edit/<%= client.id %>" class="btn btn-warning btn-sm">Editar</a>
-                            <a href="/clients/delete/<%= client.id %>" class="btn btn-danger btn-sm">Eliminar</a>
-                        </td>
-                    </tr>
-                <% }); %>
-            </tbody>
-        </table>
-    </section>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" id="saveClientBtn">Guardar Cliente</button>
+      </div>
+    </div>
+  </div>
 </div>
-
-<%- include('../partials/footer') %>
 
 <script src="/adminlte/plugins/jquery/jquery.min.js"></script>
 <script>
-    // Manejo del formulario con AJAX
-    $(document).ready(function() {
-        $('#createClientForm').submit(function(e) {
-            e.preventDefault();  // Evitar que el formulario recargue la página
+    // Abre el modal al hacer clic en el botón
+    $('#openModalBtn').click(function() {
+        $('#clientModal').modal('show');  // Muestra el modal
+    });
 
-            var formData = $(this).serialize();  // Serializa los datos del formulario
+    // Manejo de la creación del cliente
+    $('#saveClientBtn').click(function() {
+        var formData = $('#createClientForm').serialize();  // Serializa los datos del formulario
 
-            $.ajax({
-                url: '/clients/create',
-                type: 'POST',
-                data: formData,
-                success: function(response) {
-                    alert(response.message);  // Mostrar mensaje de éxito
-                    // Agregar el nuevo cliente a la tabla sin recargar
-                    var newClient = response.client;  // Suponiendo que el servidor devuelve el cliente creado
-                    $('#clientesTable tbody').append(`
-                        <tr>
-                            <td>${newClient.codigo}</td>
-                            <td>${newClient.nombre_comercial}</td>
-                            <td>${newClient.cedula}</td>
-                            <td>${newClient.estado}</td>
-                            <td>${newClient.vendedor}</td>
-                            <td>
-                                <a href="/clients/edit/${newClient.id}" class="btn btn-warning btn-sm">Editar</a>
-                                <a href="/clients/delete/${newClient.id}" class="btn btn-danger btn-sm">Eliminar</a>
-                            </td>
-                        </tr>
-                    `);
-                },
-                error: function(xhr, status, error) {
-                    alert('Hubo un error al crear el cliente');
-                }
-            });
+        $.ajax({
+            url: '/clients/create',
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                alert(response.message);  // Muestra el mensaje de éxito
+                var newClient = response.client;  // Suponiendo que el servidor devuelve el cliente recién creado
+                $('#clientesTable tbody').append(`
+                    <tr>
+                        <td>${newClient.codigo}</td>
+                        <td>${newClient.nombre_comercial}</td>
+                        <td>${newClient.cedula}</td>
+                        <td>${newClient.estado}</td>
+                        <td>${newClient.vendedor}</td>
+                        <td>
+                            <a href="/clients/edit/${newClient.id}" class="btn btn-warning btn-sm">Editar</a>
+                            <a href="/clients/delete/${newClient.id}" class="btn btn-danger btn-sm">Eliminar</a>
+                        </td>
+                    </tr>
+                `);
+                $('#clientModal').modal('hide');  // Cierra el modal
+            },
+            error: function(xhr, status, error) {
+                alert('Hubo un error al crear el cliente');
+            }
         });
     });
 </script>
