@@ -1,7 +1,13 @@
-<!-- views/dashboard.ejs -->
-<div class="content-header">
-    <h1>Bienvenido, <%= user.username %>!</h1>
+<%- include('partials/header') %> <!-- Incluye el header de layout -->
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Bienvenido, <%= user.username %>!</h1>
+    </section>
+
+    <section class="content">
+        <p>Este es tu panel de control.</p>
+    </section>
 </div>
-<div class="content">
-    <p>Este es el panel de control de tu sistema.</p>
-</div>
+
+<%- include('partials/footer') %> <!-- Incluye el footer de layout -->
