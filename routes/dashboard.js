@@ -11,11 +11,17 @@ function isAuthenticated(req, res, next) {
 }
 
 // 📌 Ruta del Dashboard (protegida)
-router.get('/', isAuthenticated, (req, res) => {
+router.get('/dashboard', (req, res) => {
+    if (!req.session.user) {
+        req.flash('errorMessage', '⚠ Debes iniciar sesión para acceder al dashboard.');
+        return res.redirect('/login');
+    }
     res.render('dashboard', { 
         title: 'Dashboard', 
-        user: req.session.user, 
-        currentPage: 'dashboard'  // Definición de currentPage
+        user: req.session.user,
+        successMessage: req.flash('successMessage'),
+        errorMessage: req.flash('errorMessage'),
+        layout: 'layout'  // Aquí usamos layout.ejs
     });
 });
 
