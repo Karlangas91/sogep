@@ -18,7 +18,6 @@ router.get('/dashboard', isAuthenticated, (req, res) => {
         successMessage: req.flash('successMessage'),
         errorMessage: req.flash('errorMessage'),
         layout: 'layout',  // Aquí usamos layout.ejs
-        body: '<h1>Bienvenido al Dashboard</h1>'
     });
 });
 
