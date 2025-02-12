@@ -22,6 +22,7 @@ router.get('/dashboard', (req, res) => {
         successMessage: req.flash('successMessage'),
         errorMessage: req.flash('errorMessage'),
         layout: 'layout'  // Aquí usamos layout.ejs
+        body:
     });
 });
 
