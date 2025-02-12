@@ -19,6 +19,15 @@ router.get('/login', (req, res) => {
     });
 });
 
+// Ruta principal (root) para redirigir al dashboard
+router.get('/', (req, res) => {
+    if (!req.session.user) {
+        req.flash('errorMessage', '⚠ Debes iniciar sesión para acceder al dashboard.');
+        return res.redirect('/login');
+    }
+    res.redirect('/dashboard');  // Redirige al dashboard si el usuario está logueado
+});
+
 // 📌 Ruta para procesar el inicio de sesión
 router.post('/login', async (req, res) => {
     const { username, password } = req.body;
