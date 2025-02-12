@@ -1,7 +1,6 @@
-<!-- Sidebar Fijo con opciones desplegables -->
 <div class="d-flex" style="height: 100vh;">
     <!-- Sidebar -->
-    <div class="sidebar bg-dark text-white p-3" style="width: 250px; height: 100%;">
+    <div class="sidebar bg-dark text-white p-3" style="width: 250px; height: 100vh; position: fixed;">
         <h4>SOGEP</h4>
         <ul class="nav flex-column">
             <li class="nav-item">
@@ -18,3 +17,9 @@
             </li>
         </ul>
     </div>
+
+    <!-- Contenido principal -->
+    <div class="content-wrapper p-3" style="flex-grow: 1; margin-left: 250px; min-height: 100vh;">
+        <%- body %> <!-- Aquí se inyecta el contenido de cada vista -->
+    </div>
+</div>
