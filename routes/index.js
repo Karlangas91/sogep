@@ -21,7 +21,7 @@ router.get('/', (req, res) => {
 
 // 📌 Ruta para mostrar el formulario de inicio de sesión
 router.get('/login', (req, res) => {
-    res.render('login', { layout: 'layout' });  // Asegúrate de usar layout.ejs aquí
+    res.render('login', { layout: 'layout' });  // Usamos layout.ejs aquí
 });
 
 // 📌 Ruta para procesar el inicio de sesión
@@ -71,7 +71,15 @@ router.get('/dashboard', (req, res) => {
         user: req.session.user,
         successMessage: req.flash('successMessage'),
         errorMessage: req.flash('errorMessage'),
-        layout: 'layout'  // Aquí también usamos layout.ejs
+        layout: 'layout'  // Aquí usamos layout.ejs
+    });
+});
+
+// 📌 Ruta para gestionar clientes
+router.get('/clients', (req, res) => {
+    res.render('clients', {
+        title: 'Gestión de Clientes',
+        layout: 'layout'  // Asegurándonos de pasar layout.ejs
     });
 });
 
