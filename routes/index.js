@@ -10,22 +10,18 @@ router.use((req, res, next) => {
     next();
 });
 
-// 📌 Ruta para mostrar el formulario de inicio de sesión
-router.get('/login', (req, res) => {
-    res.render('login', { 
-        errorMessage: res.locals.errorMessage, 
-        successMessage: res.locals.successMessage, 
-        username: ''
-    });
-});
-
-// Ruta principal (root) para redirigir al dashboard
+// 📌 Ruta Principal: Redirige a dashboard o login dependiendo si el usuario está logueado
 router.get('/', (req, res) => {
     if (!req.session.user) {
         req.flash('errorMessage', '⚠ Debes iniciar sesión para acceder al dashboard.');
-        return res.redirect('/login');
+        return res.redirect('/login'); // Redirige al login si no está logueado
     }
-    res.redirect('/dashboard');  // Redirige al dashboard si el usuario está logueado
+    res.redirect('/dashboard'); // Redirige al dashboard si está logueado
+});
+
+// 📌 Ruta para mostrar el formulario de inicio de sesión
+router.get('/login', (req, res) => {
+    res.render('login');
 });
 
 // 📌 Ruta para procesar el inicio de sesión

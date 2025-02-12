@@ -19,7 +19,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
     secret: 'tu_secreto',
     resave: false,
-    saveUninitialized: false // 🔹 Evita crear sesiones vacías
+    saveUninitialized: false // Evita crear sesiones vacías
 }));
 
 // Middleware para mensajes flash
@@ -32,7 +32,15 @@ app.use((req, res, next) => {
     res.locals.currentPage = '';
     next();
 });
-app.use(express.static('public'));
+
+// Ruta principal (/) redirige a dashboard o login
+app.get('/', (req, res) => {
+    if (!req.session.user) {
+        req.flash('errorMessage', '⚠ Debes iniciar sesión para acceder al dashboard.');
+        return res.redirect('/login'); // Si no está logueado, redirige al login
+    }
+    res.redirect('/dashboard'); // Si está logueado, redirige al dashboard
+});
 
 // Rutas
 const authRoutes = require('./routes/auth');
@@ -49,7 +57,6 @@ app.use('/roles', rolesRoutes);
 
 const clientsRoutes = require('./routes/clients');
 app.use('/clients', clientsRoutes);
-
 
 // Iniciar el servidor
 const PORT = process.env.PORT || 3000;
