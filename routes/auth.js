@@ -45,11 +45,11 @@ router.post('/login', async (req, res) => {
 
         req.session.user = { id: user.id, username: user.username, email: user.email };
         req.flash('successMessage', `✅ Bienvenido, ${user.username}`);
-        res.redirect('/dashboard');
+        return res.redirect('/dashboard');
     } catch (error) {
         console.error("❌ Error autenticando usuario:", error);
         req.flash('errorMessage', '❌ Error en el servidor, intenta nuevamente.');
-        res.redirect('/login');
+        return res.redirect('/login');
     }
 });
 
