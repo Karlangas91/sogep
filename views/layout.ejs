@@ -13,17 +13,18 @@
 
 </head>
 
-<body class="d-flex flex-column">
+<body class="d-flex flex-column" style="min-height: 100vh;">
+
 
     <!-- Header -->
     <%- include('partials/header') %>
         
     <div class="d-flex" style="flex-grow: 1;">
         <!-- Sidebar -->
-        <%- include('partials/sidebar') %>
+            <%- include('partials/sidebar') %>
 
         <!-- Contenido principal -->
-        <div class="content-wrapper p-3 flex-grow-1" style="min-height: 100vh;">
+        <div class="content-wrapper p-3" style="flex-grow: 1; min-height: 100vh;">
             <%- body %> <!-- Aquí se inyecta el contenido de cada vista -->
         </div>
     </div>
