@@ -46,9 +46,13 @@
                                 <input type="text" name="username" class="form-control" placeholder="Usuario" value="<%= username %>" required>
                             </div>
 
-                            <div class="mb-3">
+                            <div class="mb-3 position-relative">
                                 <label for="password" class="form-label">Contraseña</label>
-                                <input type="password" name="password" class="form-control" placeholder="Contraseña" required>
+                                <input type="password" name="password" id="password" class="form-control" placeholder="Contraseña" required>
+                                <!-- Ícono para mostrar/ocultar la contraseña -->
+                                <button type="button" id="togglePassword" class="btn btn-link position-absolute" style="top: 50%; right: 10px; transform: translateY(-50%);">
+                                    <i id="eyeIcon" class="fas fa-eye"></i>
+                                </button>
                             </div>
 
                             <div class="mb-3">
@@ -72,5 +76,21 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Cambiar el tipo de input para mostrar u ocultar la contraseña
+        const togglePassword = document.getElementById('togglePassword');
+        const password = document.getElementById('password');
+        const eyeIcon = document.getElementById('eyeIcon');
+
+        togglePassword.addEventListener('click', function (e) {
+            // Alternar entre los tipos de input "password" y "text"
+            const type = password.type === 'password' ? 'text' : 'password';
+            password.type = type;
+
+            // Cambiar el ícono dependiendo del estado
+            eyeIcon.classList.toggle('fa-eye');
+            eyeIcon.classList.toggle('fa-eye-slash');
+        });
+    </script>
 </body>
 </html>
