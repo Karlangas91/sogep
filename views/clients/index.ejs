@@ -1,4 +1,3 @@
-<!-- views/clients/index.ejs -->
 <%- include('../partials/header') %>
 <%- include('../partials/sidebar') %>
 
@@ -9,12 +8,12 @@
 
     <section class="content">
 
-       <!-- Botón para abrir el modal -->
-       <button id="openModalBtn" class="btn btn-primary mb-3">Agregar Nuevo Cliente</button>
+        <!-- Botón para abrir el modal -->
+        <button id="openModalBtn" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#clientModal">Agregar Nuevo Cliente</button>
 
         <!-- Tabla de Clientes -->
         <br>
-        <table class="table table-bordered">
+        <table class="table table-bordered" id="clientesTable">
             <thead>
                 <tr>
                     <th>Código</th>
@@ -113,42 +112,58 @@
   </div>
 </div>
 
-<script src="/adminlte/plugins/jquery/jquery.min.js"></script>
+<!-- Elimina jQuery ya que no es necesario con Bootstrap 5 -->
+<!-- <script src="/adminlte/plugins/jquery/jquery.min.js"></script> -->
+
+<!-- Cargar Bootstrap 5 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Código JavaScript para manejar la creación de cliente -->
 <script>
-    // Abre el modal al hacer clic en el botón
-    $('#openModalBtn').click(function() {
-        $('#clientModal').modal('show');  // Muestra el modal
+    // Este código ya no necesita jQuery, ya que Bootstrap 5 maneja los modales con los atributos de datos
+    // El modal ahora se controla a través de los atributos data-bs-toggle y data-bs-target
+
+    // Al hacer clic en el botón "Agregar Nuevo Cliente", el modal se abrirá automáticamente
+    document.getElementById('openModalBtn').addEventListener('click', function () {
+        var myModal = new bootstrap.Modal(document.getElementById('clientModal'), {
+            keyboard: false
+        });
+        myModal.show();
     });
 
     // Manejo de la creación del cliente
-    $('#saveClientBtn').click(function() {
-        var formData = $('#createClientForm').serialize();  // Serializa los datos del formulario
+    document.getElementById('saveClientBtn').addEventListener('click', function () {
+        var formData = new FormData(document.getElementById('createClientForm'));  // Usamos FormData para capturar los datos del formulario
 
-        $.ajax({
-            url: '/clients/create',
-            type: 'POST',
-            data: formData,
-            success: function(response) {
-                alert(response.message);  // Muestra el mensaje de éxito
-                var newClient = response.client;  // Suponiendo que el servidor devuelve el cliente recién creado
-                $('#clientesTable tbody').append(`
-                    <tr>
-                        <td>${newClient.codigo}</td>
-                        <td>${newClient.nombre_comercial}</td>
-                        <td>${newClient.cedula}</td>
-                        <td>${newClient.estado}</td>
-                        <td>${newClient.vendedor}</td>
-                        <td>
-                            <a href="/clients/edit/${newClient.id}" class="btn btn-warning btn-sm">Editar</a>
-                            <a href="/clients/delete/${newClient.id}" class="btn btn-danger btn-sm">Eliminar</a>
-                        </td>
-                    </tr>
-                `);
-                $('#clientModal').modal('hide');  // Cierra el modal
-            },
-            error: function(xhr, status, error) {
-                alert('Hubo un error al crear el cliente');
-            }
+        fetch('/clients/create', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);  // Muestra el mensaje de éxito
+            var newClient = data.client;  // Suponiendo que el servidor devuelve el cliente recién creado
+
+            // Añadir la nueva fila a la tabla sin recargar la página
+            var table = document.getElementById('clientesTable').getElementsByTagName('tbody')[0];
+            var row = table.insertRow();
+            row.innerHTML = `
+                <td>${newClient.codigo}</td>
+                <td>${newClient.nombre_comercial}</td>
+                <td>${newClient.cedula}</td>
+                <td>${newClient.estado}</td>
+                <td>
+                    <a href="/clients/edit/${newClient.id}" class="btn btn-warning btn-sm">Editar</a>
+                    <a href="/clients/delete/${newClient.id}" class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
+            `;
+
+            // Cerrar el modal
+            var myModal = bootstrap.Modal.getInstance(document.getElementById('clientModal'));
+            myModal.hide();
+        })
+        .catch(error => {
+            alert('Hubo un error al crear el cliente');
         });
     });
 </script>
