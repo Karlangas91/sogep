@@ -1,19 +1,20 @@
-<aside class="d-flex flex-column bg-dark text-white p-3" style="width: 250px; height: 100vh;">
-    <a href="/dashboard" class="text-white mb-3">
+<!-- Sidebar Fijo con opciones desplegables -->
+<div class="d-flex" style="height: 100vh;">
+    <!-- Sidebar -->
+    <div class="sidebar bg-dark text-white p-3" style="width: 250px; height: 100%;">
         <h4>SOGEP</h4>
-    </a>
-
-    <!-- Barra lateral con opciones -->
-    <nav class="navbar navbar-dark">
         <ul class="nav flex-column">
-            <!-- Dashboard -->
             <li class="nav-item">
-                <a href="/dashboard" class="nav-link <%= currentPage === 'dashboard' ? 'active' : '' %>">
-                    <i class="fas fa-home"></i>
-                    <p>Dashboard</p>
-                </a>
+                <a class="nav-link text-white" href="/dashboard">Dashboard</a>
             </li>
-
-            <!-- Clientes -->
             <li class="nav-item">
-                <a href="/clients" class="nav-link <%= 
+                <a class="nav-link text-white" href="/users">Gestión de Usuarios</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="/clients">Gestión de Clientes</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="/logout">Salir</a>
+            </li>
+        </ul>
+    </div>
