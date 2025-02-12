@@ -1,15 +1,20 @@
 .content-wrapper {
     padding: 20px;
+    min-height: 100vh; /* Asegura que el contenido ocupe toda la altura de la ventana */
 }
+
+/* Estilo para el enlace de la marca */
 .brand-link {
-    font-size: 1.2rem;
+    font-size: 1.5rem; /* Tamaño de fuente más grande */
     font-weight: bold;
 }
+
+/* Estilos para el switch (toggle) con Bootstrap 5 */
 .switch {
     position: relative;
     display: inline-block;
-    width: 34px;
-    height: 20px;
+    width: 40px; /* Aumenta el tamaño */
+    height: 24px; /* Aumenta el tamaño */
 }
 
 .switch input {
@@ -27,16 +32,16 @@
     bottom: 0;
     background-color: #ccc;
     transition: 0.4s;
-    border-radius: 34px;
+    border-radius: 50px; /* Redondeo completo */
 }
 
 .slider:before {
     position: absolute;
     content: "";
-    height: 14px;
-    width: 14px;
-    left: 3px;
-    bottom: 3px;
+    height: 16px; /* Ajuste del tamaño */
+    width: 16px; /* Ajuste del tamaño */
+    left: 4px;
+    bottom: 4px;
     background-color: white;
     transition: 0.4s;
     border-radius: 50%;
@@ -47,5 +52,5 @@ input:checked + .slider {
 }
 
 input:checked + .slider:before {
-    transform: translateX(14px);
+    transform: translateX(16px);
 }

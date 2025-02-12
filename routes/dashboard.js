@@ -22,7 +22,6 @@ router.get('/dashboard', (req, res) => {
         successMessage: req.flash('successMessage'),
         errorMessage: req.flash('errorMessage'),
         layout: 'layout',  // Aquí usamos layout.ejs
-        bodyContent: 'Este es el contenido principal del Dashboard'  // Asignar el valor a bodyContent
     });
 });
 
