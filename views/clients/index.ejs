@@ -116,10 +116,7 @@
 
 <!-- Código JavaScript para manejar la creación de cliente -->
 <script>
-    // Este código ya no necesita jQuery, ya que Bootstrap 5 maneja los modales con los atributos de datos
-    // El modal ahora se controla a través de los atributos data-bs-toggle y data-bs-target
-
-    // Al hacer clic en el botón "Agregar Nuevo Cliente", el modal se abrirá automáticamente
+    // Abre el modal al hacer clic en el botón
     document.getElementById('openModalBtn').addEventListener('click', function () {
         var myModal = new bootstrap.Modal(document.getElementById('clientModal'), {
             keyboard: false
@@ -154,7 +151,7 @@
                 </td>
             `;
 
-            // Cerrar el modal
+            // Cerrar el modal correctamente sin necesidad de código adicional
             var myModal = bootstrap.Modal.getInstance(document.getElementById('clientModal'));
             myModal.hide();
         })
