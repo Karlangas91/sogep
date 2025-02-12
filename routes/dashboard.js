@@ -21,8 +21,8 @@ router.get('/dashboard', (req, res) => {
         user: req.session.user,
         successMessage: req.flash('successMessage'),
         errorMessage: req.flash('errorMessage'),
-        layout: 'layout'  // Aquí usamos layout.ejs
-        body:
+        layout: 'layout',  // Aquí usamos layout.ejs
+        bodyContent:
     });
 });
 
