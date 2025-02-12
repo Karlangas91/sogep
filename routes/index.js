@@ -10,21 +10,34 @@ router.use((req, res, next) => {
     next();
 });
 
-// 📌 Ruta Principal: Redirige a dashboard o login dependiendo si el usuario está logueado
+// Middleware para verificar autenticación
+function isAuthenticated(req, res, next) {
+    if (req.session.user) {
+        return next();
+    }
+    req.flash('errorMessage', '⚠ Debes iniciar sesión para acceder.');
+    res.redirect('/login');
+}
+
+// Ruta principal: Redirige a dashboard o login
 router.get('/', (req, res) => {
     if (!req.session.user) {
         req.flash('errorMessage', '⚠ Debes iniciar sesión para acceder al dashboard.');
-        return res.redirect('/login'); // Redirige al login si no está logueado
+        return res.redirect('/login');
     }
-    res.redirect('/dashboard'); // Redirige al dashboard si está logueado
+    res.redirect('/dashboard');
 });
 
-// 📌 Ruta para mostrar el formulario de inicio de sesión
+// Ruta para mostrar el formulario de inicio de sesión
 router.get('/login', (req, res) => {
-    res.render('login', { layout: 'layout' });  // Usamos layout.ejs aquí
+    res.render('login', { 
+        successMessage: req.flash('successMessage'),
+        errorMessage: req.flash('errorMessage'),
+        username: req.flash('username') || '' // Asegura que 'username' nunca sea undefined
+    });
 });
 
-// 📌 Ruta para procesar el inicio de sesión
+// Ruta para procesar el inicio de sesión
 router.post('/login', async (req, res) => {
     const { username, password } = req.body;
 
@@ -44,14 +57,13 @@ router.post('/login', async (req, res) => {
             return res.redirect('/login');
         }
 
-        // Guardar usuario en sesión
         req.session.user = {
             id: user.id,
             username: user.username,
             email: user.email
         };
 
-        req.flash('successMessage', '✅ Inicio de sesión exitoso.');
+        req.flash('successMessage', `✅ Bienvenido, ${user.username}`);
         res.redirect('/dashboard');
     } catch (error) {
         console.error("❌ Error en el login:", error);
@@ -60,30 +72,26 @@ router.post('/login', async (req, res) => {
     }
 });
 
-// 📌 Ruta del Dashboard (protegida)
-router.get('/dashboard', (req, res) => {
-    if (!req.session.user) {
-        req.flash('errorMessage', '⚠ Debes iniciar sesión para acceder al dashboard.');
-        return res.redirect('/login');
-    }
+// Ruta del Dashboard (protegida)
+router.get('/dashboard', isAuthenticated, (req, res) => {
     res.render('dashboard', { 
         title: 'Dashboard', 
         user: req.session.user,
         successMessage: req.flash('successMessage'),
         errorMessage: req.flash('errorMessage'),
-        layout: 'layout'  // Aquí usamos layout.ejs
+        layout: 'layout'
     });
 });
 
-// 📌 Ruta para gestionar clientes
-router.get('/clients', (req, res) => {
+// Ruta para gestionar clientes
+router.get('/clients', isAuthenticated, (req, res) => {
     res.render('clients', {
         title: 'Gestión de Clientes',
         layout: 'layout'  // Asegurándonos de pasar layout.ejs
     });
 });
 
-// 📌 Ruta para cerrar sesión
+// Ruta para cerrar sesión
 router.get('/logout', (req, res) => {
     req.session.destroy(() => {
         res.redirect('/login');

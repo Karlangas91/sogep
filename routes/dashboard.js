@@ -11,11 +11,7 @@ function isAuthenticated(req, res, next) {
 }
 
 // 📌 Ruta del Dashboard (protegida)
-router.get('/dashboard', (req, res) => {
-    if (!req.session.user) {
-        req.flash('errorMessage', '⚠ Debes iniciar sesión para acceder al dashboard.');
-        return res.redirect('/login');
-    }
+router.get('/dashboard', isAuthenticated, (req, res) => {
     res.render('dashboard', { 
         title: 'Dashboard', 
         user: req.session.user,
