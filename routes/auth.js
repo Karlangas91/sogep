@@ -59,7 +59,8 @@ router.get('/dashboard', isAuthenticated, (req, res) => {
         title: 'Dashboard',
         user: req.session.user,
         successMessage: req.flash('successMessage'),
-        errorMessage: req.flash('errorMessage')
+        errorMessage: req.flash('errorMessage'),
+        layout: 'layout'
     });
 });
 
